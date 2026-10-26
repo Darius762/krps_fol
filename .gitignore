@@ -2,3 +2,6 @@
 __pycache__/
 .pytest_cache/
 CLAUDE.md
+node_modules/
+tools/docgen/data.json
+tools/docgen/package*.json

@@ -2,15 +2,24 @@
 
 Ultima actualizare: 2026-10-26
 
-## Unde suntem
-- Pasii 1-7 GATA si comisi (pasul 7 = docs markdown + README).
-- Extra terminat acum (necomis): **interfata web + documentul Word/PDF** (teste verzi, 106 passed)
-- Mesaj de commit propus: `interfata web si documentatia Word cu 40 de exemple`
-- Ce mai ramane (de discutat cu Darius):
-  - Darius testeaza interfata web dupa documentul Word (cap. 2.3 si 9)
-  - completat numele coechipierului pe coperta documentului (acum "______")
-  - verificare credite reale ECTS (acum inventate) si eventual prerechizitele
-  - optional: conditie pe an in poate_inscrie; aritmetica pentru suma creditelor
+## Unde suntem (2026-10-26)
+- Proiectul e COMPLET pentru cerintele temei: pasii 1-7 + interfata web + documentul Word/PDF (106 teste verzi).
+- Ultimul lucru facut: interfata web + docs/KRPS_Tema2_Documentatie.docx/.pdf
+  - comis (089a214)
+- Necomis: tools/docgen/ (scripturile de generare a documentului, mutate din scratchpad) + .gitignore
+  - mesaj de commit propus: `scripturi pentru regenerarea documentului Word`
+- DECIZIE: deocamdata NU mai adaugam nimic. Darius face o PREZENTARE INTERMEDIARA la profesor;
+  adaugam ceva doar daca profesorul recomanda.
+- Cand revine Darius, intreaba-l ce a zis profesorul la prezentarea intermediara.
+- Idei pregatite, daca profesorul cere mai mult (in ordinea valorii propusa lui Darius):
+  1. aritmetica/comparatii in motor (is, <, >, =<, >=) -> poate_inscrie cu conditie pe an (AnM =< An)
+     -> rezolva limitarea: andrei (an 1) vede materii fara prerechizite din anul 2
+  2. agregare (findall/sum) -> credite_acumulate(S, T); eligibil_licenta cu T >= prag
+  3. un student nou (ex. florin, anul 3) cu picat SI apoi promovat aceeasi materie -> restanta dispare
+     (caz netestat acum de date); primul student din anul 3
+  - NU are sens sa adaugam studenti doar ca sa fie mai multi
+- Alte lucruri ramase: numele coechipierului pe coperta documentului ("______"); creditele ECTS sunt inventate.
+- Dupa orice schimbare in KB/exemple: re-rulat exemplele si REGENERAT documentul Word (vezi sectiunea de la final).
 
 ## Pasi
 | Pas | Modul | Status |
@@ -22,7 +31,7 @@ Ultima actualizare: 2026-10-26
 | 5 | fol/engine.py | gata, comis (79a21ad) |
 | 6 | main.py (REPL) | gata, comis (f149bbe) |
 | 7 | docs/rules.md, docs/examples.md, docs/prezentare.md, README.md | gata, comis |
-| extra | web/ + docs/KRPS_Tema2_Documentatie.docx/.pdf | gata, necomis |
+| extra | web/ + docs/KRPS_Tema2_Documentatie.docx/.pdf | gata, comis (089a214) |
 
 ## Detalii pasul 3 (parser)
 - tokenize cu regex; parse_program(text) -> lista de Rule; parse_query(text) -> tuple de goal-uri
@@ -80,7 +89,7 @@ Ultima actualizare: 2026-10-26
 - web/static/index.html: tab-uri Interogare, Exemple, Graf (click = necesita galben / dependente mov; colorare dupa student),
   Studenti, Baza de cunostinte, Ajutor; linkuri #q=, #t=, #student=, #subject=, #examples
 - engine: functie noua query_variables(goals)
-- document: docs/KRPS_Tema2_Documentatie.docx + .pdf (28 pagini), generat cu scripturi din scratchpad (export_data.py
-  ruleaza motorul -> data.json; build.js cu npm docx); cuprinsul actualizat si PDF exportat prin Word (COM, Word 12).
-  Daca se schimba KB-ul/exemplele, documentul trebuie regenerat (scripturile NU sunt in repo).
+- document: docs/KRPS_Tema2_Documentatie.docx + .pdf (28 pagini), generat cu tools/docgen/ (export_data.py
+  ruleaza motorul -> data.json; build.js cu npm docx; instructiuni in tools/docgen/README.md); cuprinsul actualizat si PDF exportat prin Word (COM, Word 12).
+  Daca se schimba KB-ul/exemplele, documentul trebuie regenerat. Cifre scrise de mana in build.js: nr. teste (106).
 - cifre in document: 105-106 teste, 375 clauze, 69 materii, 63 prerechizite
