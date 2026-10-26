@@ -1,0 +1,404 @@
+% =====================================================================
+% Planul de invatamant - Calculatoare, Facultatea de Automatica,
+% Calculatoare si Electronica, Craiova
+% =====================================================================
+
+% ---------------------------------------------------------------------
+% materie(Cod, An, Semestru)
+% ---------------------------------------------------------------------
+
+% anul 1, semestrul 1
+materie(analiza_matematica, 1, 1).
+materie(algebra_liniara, 1, 1).
+materie(programarea_calculatoarelor, 1, 1).
+materie(proiectare_logica_1, 1, 1).
+materie(fizica_1, 1, 1).
+materie(introducere_ti, 1, 1).
+materie(engleza_1, 1, 1).
+materie(educatie_fizica_1, 1, 1).
+
+% anul 1, semestrul 2
+materie(matematici_speciale, 1, 2).
+materie(metode_numerice, 1, 2).
+materie(tehnici_de_programare, 1, 2).
+materie(proiectare_logica_2, 1, 2).
+materie(electrotehnica, 1, 2).
+materie(fizica_2, 1, 2).
+materie(engleza_2, 1, 2).
+materie(educatie_fizica_2, 1, 2).
+
+% anul 2, semestrul 3
+materie(structuri_de_date, 2, 3).
+materie(arhitectura_sistemelor_de_calcul, 2, 3).
+materie(programarea_orientata_obiect, 2, 3).
+materie(electronica, 2, 3).
+materie(teoria_sistemelor, 2, 3).
+materie(economie_contabilitate, 2, 3).
+materie(engleza_3, 2, 3).
+materie(educatie_fizica_3, 2, 3).
+
+% anul 2, semestrul 4
+materie(structura_organizarea_calculatoarelor, 2, 4).
+materie(inteligenta_artificiala, 2, 4).
+materie(grafica_pe_calculator, 2, 4).
+materie(proiectarea_aplicatiilor_oo, 2, 4).
+materie(grafica_asistata, 2, 4).
+materie(masuratori_senzori_traductoare, 2, 4).
+materie(engleza_4, 2, 4).
+materie(practica_1, 2, 4).
+materie(educatie_fizica_4, 2, 4).
+
+% anul 3, semestrul 5
+materie(circuite_integrate_digitale, 3, 5).
+materie(baze_de_date, 3, 5).
+materie(sisteme_de_operare, 3, 5).
+materie(retele_de_calculatoare, 3, 5).
+materie(sisteme_concurente_distribuite, 3, 5).
+materie(modelare_simulare, 3, 5).
+materie(proiect_1, 3, 5).
+
+% anul 3, semestrul 6
+materie(algoritmi_paraleli_distribuiti, 3, 6).
+materie(ingineria_programarii, 3, 6).
+materie(proiectarea_aplicatiilor_web, 3, 6).
+materie(comunicatii_de_date, 3, 6).
+materie(proiectarea_cu_microprocesoare, 3, 6).
+materie(limbaje_formale_automate, 3, 6).
+materie(proiect_2, 3, 6).
+materie(practica_2, 3, 6).
+
+% anul 4, semestrul 7
+materie(managementul_proiectelor, 4, 7).
+materie(comert_electronic, 4, 7).
+materie(securitatea_datelor, 4, 7).
+materie(proiectarea_bazelor_de_date, 4, 7).
+materie(proiectarea_translatoarelor, 4, 7).
+materie(invatare_automata, 4, 7).
+materie(proiect_3, 4, 7).
+
+% anul 4, semestrul 8
+materie(administrarea_retelelor, 4, 8).
+materie(circuite_vlsi, 4, 8).
+materie(verificarea_testarea_sistemelor, 4, 8).
+materie(proiect_4, 4, 8).
+materie(practica_licenta, 4, 8).
+
+% anul 4, semestrul 8 - optionale
+materie(calcul_mobil, 4, 8).
+materie(regasirea_informatiei, 4, 8).
+materie(sisteme_grafice, 4, 8).
+materie(sisteme_multimedia, 4, 8).
+materie(interactiunea_om_calculator, 4, 8).
+materie(sisteme_incorporate, 4, 8).
+materie(procesarea_semnalelor, 4, 8).
+materie(retele_de_senzori, 4, 8).
+materie(sisteme_timp_real, 4, 8).
+
+optional(calcul_mobil).
+optional(regasirea_informatiei).
+optional(sisteme_grafice).
+optional(sisteme_multimedia).
+optional(interactiunea_om_calculator).
+optional(sisteme_incorporate).
+optional(procesarea_semnalelor).
+optional(retele_de_senzori).
+optional(sisteme_timp_real).
+
+% ---------------------------------------------------------------------
+% credite(Materie, NumarCredite)  - ECTS
+% ---------------------------------------------------------------------
+
+credite(analiza_matematica, 6).
+credite(algebra_liniara, 5).
+credite(programarea_calculatoarelor, 6).
+credite(proiectare_logica_1, 5).
+credite(fizica_1, 4).
+credite(introducere_ti, 2).
+credite(engleza_1, 2).
+credite(educatie_fizica_1, 2).
+
+credite(matematici_speciale, 5).
+credite(metode_numerice, 4).
+credite(tehnici_de_programare, 6).
+credite(proiectare_logica_2, 5).
+credite(electrotehnica, 5).
+credite(fizica_2, 3).
+credite(engleza_2, 2).
+credite(educatie_fizica_2, 2).
+
+credite(structuri_de_date, 6).
+credite(arhitectura_sistemelor_de_calcul, 5).
+credite(programarea_orientata_obiect, 6).
+credite(electronica, 5).
+credite(teoria_sistemelor, 4).
+credite(economie_contabilitate, 2).
+credite(engleza_3, 2).
+credite(educatie_fizica_3, 2).
+
+credite(structura_organizarea_calculatoarelor, 5).
+credite(inteligenta_artificiala, 5).
+credite(grafica_pe_calculator, 4).
+credite(proiectarea_aplicatiilor_oo, 5).
+credite(grafica_asistata, 3).
+credite(masuratori_senzori_traductoare, 4).
+credite(engleza_4, 2).
+credite(practica_1, 2).
+credite(educatie_fizica_4, 2).
+
+credite(circuite_integrate_digitale, 5).
+credite(baze_de_date, 5).
+credite(sisteme_de_operare, 5).
+credite(retele_de_calculatoare, 5).
+credite(sisteme_concurente_distribuite, 4).
+credite(modelare_simulare, 4).
+credite(proiect_1, 2).
+
+credite(algoritmi_paraleli_distribuiti, 4).
+credite(ingineria_programarii, 4).
+credite(proiectarea_aplicatiilor_web, 4).
+credite(comunicatii_de_date, 4).
+credite(proiectarea_cu_microprocesoare, 5).
+credite(limbaje_formale_automate, 4).
+credite(proiect_2, 2).
+credite(practica_2, 3).
+
+credite(managementul_proiectelor, 4).
+credite(comert_electronic, 4).
+credite(securitatea_datelor, 5).
+credite(proiectarea_bazelor_de_date, 5).
+credite(proiectarea_translatoarelor, 5).
+credite(invatare_automata, 5).
+credite(proiect_3, 2).
+
+credite(administrarea_retelelor, 4).
+credite(circuite_vlsi, 4).
+credite(verificarea_testarea_sistemelor, 4).
+credite(proiect_4, 2).
+credite(practica_licenta, 4).
+
+credite(calcul_mobil, 4).
+credite(regasirea_informatiei, 4).
+credite(sisteme_grafice, 4).
+credite(sisteme_multimedia, 4).
+credite(interactiunea_om_calculator, 4).
+credite(sisteme_incorporate, 4).
+credite(procesarea_semnalelor, 4).
+credite(retele_de_senzori, 4).
+credite(sisteme_timp_real, 4).
+
+% ---------------------------------------------------------------------
+% prerechizit(P, M): materia P trebuie promovata inainte de M
+% ---------------------------------------------------------------------
+
+% lantul programare
+prerechizit(programarea_calculatoarelor, tehnici_de_programare).
+prerechizit(tehnici_de_programare, structuri_de_date).
+prerechizit(tehnici_de_programare, programarea_orientata_obiect).
+prerechizit(programarea_orientata_obiect, proiectarea_aplicatiilor_oo).
+prerechizit(proiectarea_aplicatiilor_oo, ingineria_programarii).
+prerechizit(proiectarea_aplicatiilor_oo, proiectarea_aplicatiilor_web).
+prerechizit(proiectarea_aplicatiilor_web, comert_electronic).
+prerechizit(proiectarea_aplicatiilor_web, calcul_mobil).
+prerechizit(proiectarea_aplicatiilor_web, interactiunea_om_calculator).
+prerechizit(proiectarea_aplicatiilor_web, proiect_3).
+prerechizit(ingineria_programarii, managementul_proiectelor).
+
+% lantul date si algoritmi
+prerechizit(structuri_de_date, baze_de_date).
+prerechizit(baze_de_date, proiectarea_bazelor_de_date).
+prerechizit(baze_de_date, proiect_2).
+prerechizit(structuri_de_date, sisteme_concurente_distribuite).
+prerechizit(programarea_orientata_obiect, sisteme_concurente_distribuite).
+prerechizit(sisteme_concurente_distribuite, algoritmi_paraleli_distribuiti).
+prerechizit(structuri_de_date, limbaje_formale_automate).
+prerechizit(limbaje_formale_automate, proiectarea_translatoarelor).
+prerechizit(structuri_de_date, inteligenta_artificiala).
+prerechizit(inteligenta_artificiala, invatare_automata).
+prerechizit(metode_numerice, invatare_automata).
+prerechizit(invatare_automata, regasirea_informatiei).
+
+% lantul hardware
+prerechizit(proiectare_logica_1, proiectare_logica_2).
+prerechizit(proiectare_logica_2, arhitectura_sistemelor_de_calcul).
+prerechizit(arhitectura_sistemelor_de_calcul, structura_organizarea_calculatoarelor).
+prerechizit(structura_organizarea_calculatoarelor, proiectarea_cu_microprocesoare).
+prerechizit(structura_organizarea_calculatoarelor, sisteme_de_operare).
+prerechizit(structura_organizarea_calculatoarelor, retele_de_calculatoare).
+prerechizit(arhitectura_sistemelor_de_calcul, proiect_1).
+prerechizit(proiectarea_cu_microprocesoare, sisteme_incorporate).
+prerechizit(proiectarea_cu_microprocesoare, proiect_4).
+prerechizit(proiectarea_cu_microprocesoare, sisteme_timp_real).
+prerechizit(sisteme_de_operare, sisteme_timp_real).
+
+% lantul electric si electronic
+prerechizit(fizica_1, electrotehnica).
+prerechizit(electrotehnica, electronica).
+prerechizit(electronica, masuratori_senzori_traductoare).
+prerechizit(electronica, circuite_integrate_digitale).
+prerechizit(proiectare_logica_2, circuite_integrate_digitale).
+prerechizit(circuite_integrate_digitale, circuite_vlsi).
+prerechizit(circuite_integrate_digitale, verificarea_testarea_sistemelor).
+
+% lantul matematica si sisteme
+prerechizit(analiza_matematica, matematici_speciale).
+prerechizit(analiza_matematica, metode_numerice).
+prerechizit(matematici_speciale, teoria_sistemelor).
+prerechizit(teoria_sistemelor, modelare_simulare).
+prerechizit(teoria_sistemelor, procesarea_semnalelor).
+
+% lantul retele
+prerechizit(retele_de_calculatoare, comunicatii_de_date).
+prerechizit(retele_de_calculatoare, securitatea_datelor).
+prerechizit(retele_de_calculatoare, administrarea_retelelor).
+prerechizit(retele_de_calculatoare, retele_de_senzori).
+prerechizit(masuratori_senzori_traductoare, retele_de_senzori).
+
+% lantul grafica
+prerechizit(algebra_liniara, grafica_pe_calculator).
+prerechizit(tehnici_de_programare, grafica_pe_calculator).
+prerechizit(grafica_pe_calculator, sisteme_grafice).
+prerechizit(grafica_pe_calculator, sisteme_multimedia).
+
+% limbi, sport, practica
+prerechizit(engleza_1, engleza_2).
+prerechizit(engleza_2, engleza_3).
+prerechizit(engleza_3, engleza_4).
+prerechizit(educatie_fizica_1, educatie_fizica_2).
+prerechizit(educatie_fizica_2, educatie_fizica_3).
+prerechizit(educatie_fizica_3, educatie_fizica_4).
+prerechizit(practica_1, practica_2).
+prerechizit(practica_2, practica_licenta).
+
+% ---------------------------------------------------------------------
+% student(Nume, AnDeStudiu)
+% ---------------------------------------------------------------------
+
+student(andrei, 1).
+student(bianca, 2).
+student(cristian, 2).
+student(diana, 4).
+student(emil, 4).
+
+% ---------------------------------------------------------------------
+% promovat(Student, Materie)  si  picat(Student, Materie)
+% ---------------------------------------------------------------------
+
+% andrei: anul 1, a terminat semestrul 1, a picat fizica_1
+promovat(andrei, analiza_matematica).
+promovat(andrei, algebra_liniara).
+promovat(andrei, programarea_calculatoarelor).
+promovat(andrei, proiectare_logica_1).
+promovat(andrei, introducere_ti).
+promovat(andrei, engleza_1).
+promovat(andrei, educatie_fizica_1).
+picat(andrei, fizica_1).
+
+% bianca: anul 2, tot anul 1 promovat
+promovat(bianca, analiza_matematica). promovat(bianca, algebra_liniara).
+promovat(bianca, programarea_calculatoarelor). promovat(bianca, proiectare_logica_1).
+promovat(bianca, fizica_1). promovat(bianca, introducere_ti).
+promovat(bianca, engleza_1). promovat(bianca, educatie_fizica_1).
+promovat(bianca, matematici_speciale). promovat(bianca, metode_numerice).
+promovat(bianca, tehnici_de_programare). promovat(bianca, proiectare_logica_2).
+promovat(bianca, electrotehnica). promovat(bianca, fizica_2).
+promovat(bianca, engleza_2). promovat(bianca, educatie_fizica_2).
+
+% cristian: anul 2, a picat proiectare_logica_2 si a refacut-o fara succes
+promovat(cristian, analiza_matematica). promovat(cristian, algebra_liniara).
+promovat(cristian, programarea_calculatoarelor). promovat(cristian, proiectare_logica_1).
+promovat(cristian, fizica_1). promovat(cristian, introducere_ti).
+promovat(cristian, engleza_1). promovat(cristian, educatie_fizica_1).
+promovat(cristian, matematici_speciale). promovat(cristian, metode_numerice).
+promovat(cristian, tehnici_de_programare).
+promovat(cristian, electrotehnica). promovat(cristian, fizica_2).
+promovat(cristian, engleza_2). promovat(cristian, educatie_fizica_2).
+picat(cristian, proiectare_logica_2).
+
+% diana: anul 4, fara restante, a facut practica de licenta
+promovat(diana, analiza_matematica). promovat(diana, algebra_liniara).
+promovat(diana, programarea_calculatoarelor). promovat(diana, proiectare_logica_1).
+promovat(diana, fizica_1). promovat(diana, introducere_ti).
+promovat(diana, engleza_1). promovat(diana, educatie_fizica_1).
+promovat(diana, matematici_speciale). promovat(diana, metode_numerice).
+promovat(diana, tehnici_de_programare). promovat(diana, proiectare_logica_2).
+promovat(diana, electrotehnica). promovat(diana, fizica_2).
+promovat(diana, engleza_2). promovat(diana, educatie_fizica_2).
+promovat(diana, structuri_de_date). promovat(diana, arhitectura_sistemelor_de_calcul).
+promovat(diana, programarea_orientata_obiect). promovat(diana, electronica).
+promovat(diana, teoria_sistemelor). promovat(diana, economie_contabilitate).
+promovat(diana, engleza_3). promovat(diana, educatie_fizica_3).
+promovat(diana, structura_organizarea_calculatoarelor). promovat(diana, inteligenta_artificiala).
+promovat(diana, grafica_pe_calculator). promovat(diana, proiectarea_aplicatiilor_oo).
+promovat(diana, grafica_asistata). promovat(diana, masuratori_senzori_traductoare).
+promovat(diana, engleza_4). promovat(diana, practica_1).
+promovat(diana, educatie_fizica_4).
+promovat(diana, circuite_integrate_digitale). promovat(diana, baze_de_date).
+promovat(diana, sisteme_de_operare). promovat(diana, retele_de_calculatoare).
+promovat(diana, sisteme_concurente_distribuite). promovat(diana, modelare_simulare).
+promovat(diana, proiect_1).
+promovat(diana, algoritmi_paraleli_distribuiti). promovat(diana, ingineria_programarii).
+promovat(diana, proiectarea_aplicatiilor_web). promovat(diana, comunicatii_de_date).
+promovat(diana, proiectarea_cu_microprocesoare). promovat(diana, limbaje_formale_automate).
+promovat(diana, proiect_2). promovat(diana, practica_2).
+promovat(diana, managementul_proiectelor). promovat(diana, comert_electronic).
+promovat(diana, securitatea_datelor). promovat(diana, proiectarea_bazelor_de_date).
+promovat(diana, proiectarea_translatoarelor). promovat(diana, invatare_automata).
+promovat(diana, proiect_3).
+promovat(diana, practica_licenta).
+
+% emil: anul 4, are restanta la securitatea_datelor
+promovat(emil, analiza_matematica). promovat(emil, algebra_liniara).
+promovat(emil, programarea_calculatoarelor). promovat(emil, proiectare_logica_1).
+promovat(emil, fizica_1). promovat(emil, introducere_ti).
+promovat(emil, engleza_1). promovat(emil, educatie_fizica_1).
+promovat(emil, matematici_speciale). promovat(emil, metode_numerice).
+promovat(emil, tehnici_de_programare). promovat(emil, proiectare_logica_2).
+promovat(emil, electrotehnica). promovat(emil, fizica_2).
+promovat(emil, engleza_2). promovat(emil, educatie_fizica_2).
+promovat(emil, structuri_de_date). promovat(emil, arhitectura_sistemelor_de_calcul).
+promovat(emil, programarea_orientata_obiect). promovat(emil, electronica).
+promovat(emil, teoria_sistemelor). promovat(emil, economie_contabilitate).
+promovat(emil, engleza_3). promovat(emil, educatie_fizica_3).
+promovat(emil, structura_organizarea_calculatoarelor). promovat(emil, inteligenta_artificiala).
+promovat(emil, grafica_pe_calculator). promovat(emil, proiectarea_aplicatiilor_oo).
+promovat(emil, grafica_asistata). promovat(emil, masuratori_senzori_traductoare).
+promovat(emil, engleza_4). promovat(emil, practica_1).
+promovat(emil, educatie_fizica_4).
+promovat(emil, circuite_integrate_digitale). promovat(emil, baze_de_date).
+promovat(emil, sisteme_de_operare). promovat(emil, retele_de_calculatoare).
+promovat(emil, sisteme_concurente_distribuite). promovat(emil, modelare_simulare).
+promovat(emil, proiect_1).
+promovat(emil, algoritmi_paraleli_distribuiti). promovat(emil, ingineria_programarii).
+promovat(emil, proiectarea_aplicatiilor_web). promovat(emil, comunicatii_de_date).
+promovat(emil, proiectarea_cu_microprocesoare). promovat(emil, limbaje_formale_automate).
+promovat(emil, proiect_2). promovat(emil, practica_2).
+promovat(emil, managementul_proiectelor). promovat(emil, comert_electronic).
+promovat(emil, proiectarea_bazelor_de_date).
+promovat(emil, proiectarea_translatoarelor). promovat(emil, invatare_automata).
+promovat(emil, proiect_3).
+promovat(emil, practica_licenta).
+picat(emil, securitatea_datelor).
+
+% =====================================================================
+% REGULI
+% =====================================================================
+
+% necesita(M, P): P e prerechizit direct sau indirect al lui M (recursiv)
+necesita(M, P) :- prerechizit(P, M).
+necesita(M, P) :- prerechizit(Q, M), necesita(Q, P).
+
+% S poate urma M daca nu a promovat-o si are TOATE prerechizitele directe
+poate_inscrie(S, M) :- student(S, _), materie(M, _, _), not(promovat(S, M)), not(prerechizit_nepromovat(S, M)).
+prerechizit_nepromovat(S, M) :- prerechizit(P, M), not(promovat(S, P)).
+
+% ii_lipseste(S, M, P): pentru M, studentului S ii lipseste P din lantul de prerechizite
+ii_lipseste(S, M, P) :- student(S, _), necesita(M, P), not(promovat(S, P)).
+
+% colegi: in acelasi an de studiu, persoane diferite
+colegi(S1, S2) :- student(S1, An), student(S2, An), S1 \= S2.
+
+% restanta: a picat si inca nu a promovat
+restanta(S, M) :- picat(S, M), not(promovat(S, M)).
+
+% eligibil pentru licenta: anul 4, practica de licenta facuta, fara restante
+eligibil_licenta(S) :- student(S, 4), promovat(S, practica_licenta), not(restanta(S, _)).
