@@ -3,14 +3,14 @@
 Ultima actualizare: 2026-10-26
 
 ## Unde suntem
-- Pasul curent terminat: **7 - livrabile** (docs/rules.md, docs/examples.md, docs/prezentare.md, README.md)
-  + 2 mici imbunatatiri in engine (teste verzi, 94 passed), **necomis inca**
-- Mesaj de commit propus: `pasul 7: documentatie, exemple de interogari si README`
-- Toti pasii din arhitectura sunt GATA. Ce mai ramane (de discutat cu Darius):
+- Pasii 1-7 GATA si comisi (pasul 7 = docs markdown + README).
+- Extra terminat acum (necomis): **interfata web + documentul Word/PDF** (teste verzi, 106 passed)
+- Mesaj de commit propus: `interfata web si documentatia Word cu 40 de exemple`
+- Ce mai ramane (de discutat cu Darius):
+  - Darius testeaza interfata web dupa documentul Word (cap. 2.3 si 9)
+  - completat numele coechipierului pe coperta documentului (acum "______")
   - verificare credite reale ECTS (acum inventate) si eventual prerechizitele
-  - repetitie demo dupa docs/prezentare.md; completat coloana "Cine" (impartire intre coechipieri)
-  - optional: interfata web mica; optional: conditie pe an in poate_inscrie (andrei vede materii din anii mari)
-- Git: Darius avea 2 conturi in Git Credential Manager (Darius762, Dariurs) -> rezolvat de el
+  - optional: conditie pe an in poate_inscrie; aritmetica pentru suma creditelor
 
 ## Pasi
 | Pas | Modul | Status |
@@ -21,7 +21,8 @@ Ultima actualizare: 2026-10-26
 | 4 | fol/knowledge_base.py + kb/curriculum.kb | gata, comis (f37bf78) |
 | 5 | fol/engine.py | gata, comis (79a21ad) |
 | 6 | main.py (REPL) | gata, comis (f149bbe) |
-| 7 | docs/rules.md, docs/examples.md, docs/prezentare.md, README.md | gata, necomis |
+| 7 | docs/rules.md, docs/examples.md, docs/prezentare.md, README.md | gata, comis |
+| extra | web/ + docs/KRPS_Tema2_Documentatie.docx/.pdf | gata, necomis |
 
 ## Detalii pasul 3 (parser)
 - tokenize cu regex; parse_program(text) -> lista de Rule; parse_query(text) -> tuple de goal-uri
@@ -68,3 +69,18 @@ Ultima actualizare: 2026-10-26
 - docs/examples.md: 15 interogari, rezultatele verificate prin rulare reala; daca se schimba KB-ul, trebuie re-rulate
 - cifre KB: 69 materii, 9 optionale, 63 fapte prerechizit, 5 studenti, 3 fapte picat, 375 clauze total
 - docs/prezentare.md: 8 sectiuni cu timpi, scenariu demo, intrebari probabile
+
+## Detalii extra: interfata web + document Word
+- pornire: `python -m web` (web/__main__.py), port 8000, --port, --no-browser, kb optional; doar stdlib (http.server)
+- web/api.py: run_query (raspunsuri + trace structurat, max 200 raspunsuri / 3000 pasi), kb_overview, clauses
+  (afiseaza _G1 ca _), curriculum (materii, muchii, studenti calculati prin interogari), examples
+- web/server.py: App (get/post pe rute /api/info, /api/clauses, /api/curriculum, /api/examples, POST /api/query)
+- web/examples.py: SURSA UNICA a celor 40 de exemple (7 categorii) - folosita si de interfata si de document
+- web/labels.py: denumirile reale ale materiilor
+- web/static/index.html: tab-uri Interogare, Exemple, Graf (click = necesita galben / dependente mov; colorare dupa student),
+  Studenti, Baza de cunostinte, Ajutor; linkuri #q=, #t=, #student=, #subject=, #examples
+- engine: functie noua query_variables(goals)
+- document: docs/KRPS_Tema2_Documentatie.docx + .pdf (28 pagini), generat cu scripturi din scratchpad (export_data.py
+  ruleaza motorul -> data.json; build.js cu npm docx); cuprinsul actualizat si PDF exportat prin Word (COM, Word 12).
+  Daca se schimba KB-ul/exemplele, documentul trebuie regenerat (scripturile NU sunt in repo).
+- cifre in document: 105-106 teste, 375 clauze, 69 materii, 63 prerechizite

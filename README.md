@@ -39,6 +39,19 @@ false.
 | `:trace` | pornește/oprește afișarea pașilor de inferență |
 | `:quit` | ieșire (sau Ctrl+C) |
 
+## Interfața web
+
+```powershell
+python -m web                 # porneste serverul si deschide http://127.0.0.1:8000
+python -m web --port 8080     # alt port
+```
+
+Tab-uri: Interogare (cu trace), Exemple (40 de interogări, rulabile cu un click), Graful prerechizitelor (colorabil după student), Studenți, Baza de cunoștințe, Ajutor. Folosește doar biblioteca standard Python și funcționează offline.
+
+## Documentație
+
+[docs/KRPS_Tema2_Documentatie.docx](docs/KRPS_Tema2_Documentatie.docx) (și [PDF](docs/KRPS_Tema2_Documentatie.pdf)): toate materiile și legăturile de prerechizit, regulile în FOL, comenzile, cele 40 de exemple cu rezultatele reale, trace-uri explicate, scenariul demo și întrebări posibile.
+
 ## Teste
 
 ```powershell
@@ -55,6 +68,7 @@ pytest -v
 | [fol/knowledge_base.py](fol/knowledge_base.py) | încărcarea KB, index după (predicat, aritate) |
 | [fol/engine.py](fol/engine.py) | backward chaining cu generatori, `\=`, `not`, limită de adâncime, trace |
 | [main.py](main.py) | interfața din terminal (REPL) |
+| [web/](web/) | interfața web: `server.py`, `api.py`, `examples.py` (cele 40 de exemple), `labels.py` (denumirile materiilor), `static/index.html` |
 | [kb/curriculum.kb](kb/curriculum.kb) | baza de cunoștințe |
 | [docs/rules.md](docs/rules.md) | faptele și regulile, în FOL formal și în sintaxa noastră |
 | [docs/examples.md](docs/examples.md) | 15 interogări netriviale cu rezultatele reale |

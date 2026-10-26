@@ -13,11 +13,7 @@ class Engine:
     def ask(self, goals):
         self.depth_limit_hit = False
         self.counter = 0
-        query_vars = []
-        for goal in goals:
-            for var in variables(goal):
-                if var not in query_vars and not var.name.startswith("_"):
-                    query_vars.append(var)
+        query_vars = query_variables(goals)
         for subst in self.solve(tuple(goals), {}, 0):
             yield {var.name: substitute(var, subst) for var in query_vars}
 
@@ -72,6 +68,15 @@ class Engine:
             substitute(rule.head, mapping),
             tuple(substitute(goal, mapping) for goal in rule.body),
         )
+
+
+def query_variables(goals):
+    result = []
+    for goal in goals:
+        for var in variables(goal):
+            if var not in result and not var.name.startswith("_"):
+                result.append(var)
+    return result
 
 
 def variables(term):

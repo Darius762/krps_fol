@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motor FOL</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #667085; --border: #e3e6eb;
+  --accent: #2f5bea; --accent-soft: #e8eefd; --ok: #13804b; --ok-soft: #e3f5eb;
+  --bad: #c0392b; --bad-soft: #fbe9e7; --warn: #a76400; --warn-soft: #fdf2dc;
+  --code: #f1f3f6; --var: #8a3ffc; --call: #2f5bea; --exit: #13804b; --fail: #c0392b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 "Segoe UI", system-ui, sans-serif; }
+code, .mono, input.query { font-family: "Cascadia Code", Consolas, monospace; }
+header { background: var(--panel); border-bottom: 1px solid var(--border); padding: 14px 24px 0; }
+header h1 { margin: 0; font-size: 20px; }
+header .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+nav { display: flex; gap: 4px; margin-top: 12px; flex-wrap: wrap; }
+nav button { border: 0; background: none; padding: 9px 14px; font: inherit; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; }
+nav button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+main { padding: 20px 24px 40px; max-width: 1400px; margin: 0 auto; }
+.tab { display: none; }
+.tab.active { display: block; }
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
+.panel h2 { margin: 0 0 10px; font-size: 16px; }
+.muted { color: var(--muted); }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.querybox { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); flex: 1; min-width: 280px; }
+.querybox span { padding: 0 4px 0 12px; color: var(--muted); font-family: Consolas, monospace; font-weight: 600; }
+input.query { flex: 1; border: 0; padding: 11px 10px; font-size: 15px; background: transparent; outline: none; color: var(--text); }
+button.btn { border: 1px solid var(--accent); background: var(--accent); color: #fff; border-radius: 8px; padding: 9px 16px; font: inherit; cursor: pointer; }
+button.btn.ghost { background: var(--panel); color: var(--accent); }
+button.btn.small { padding: 4px 10px; font-size: 13px; }
+label.toggle { display: flex; gap: 6px; align-items: center; cursor: pointer; user-select: none; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.chip { border: 1px solid var(--border); background: var(--code); border-radius: 999px; padding: 2px 10px; font-size: 13px; cursor: pointer; font-family: Consolas, monospace; }
+.chip:hover { border-color: var(--accent); }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-weight: 600; font-size: 13px; }
+.badge.true { background: var(--ok-soft); color: var(--ok); }
+.badge.false { background: var(--bad-soft); color: var(--bad); }
+.badge.warn { background: var(--warn-soft); color: var(--warn); }
+.badge.info { background: var(--accent-soft); color: var(--accent); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; background: var(--code); }
+td.num { color: var(--muted); width: 40px; }
+.error { background: var(--bad-soft); color: var(--bad); padding: 10px 12px; border-radius: 8px; font-family: Consolas, monospace; }
+.trace { font-family: Consolas, monospace; font-size: 13px; max-height: 520px; overflow: auto; background: var(--code); border-radius: 8px; padding: 10px 12px; white-space: pre; }
+.trace .call { color: var(--call); font-weight: 600; }
+.trace .exit { color: var(--exit); font-weight: 600; }
+.trace .fail { color: var(--fail); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.grid2.graphgrid { grid-template-columns: minmax(0, 1fr) 330px; }
+main:has(#tab-graph.active) { max-width: none; }
+@media (max-width: 1000px) { .grid2, .grid2.graphgrid { grid-template-columns: 1fr; } }
+.history div { padding: 4px 0; border-bottom: 1px dashed var(--border); cursor: pointer; font-family: Consolas, monospace; font-size: 13px; }
+.history div:hover { color: var(--accent); }
+.examples h3 { margin: 22px 0 8px; font-size: 15px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.card .title { font-weight: 600; }
+.card .title b { color: var(--accent); margin-right: 6px; }
+.card code { background: var(--code); padding: 6px 8px; border-radius: 6px; font-size: 13px; display: block; white-space: pre-wrap; word-break: break-word; }
+.card .expl { color: var(--muted); font-size: 13px; flex: 1; }
+.graph-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+svg text { font-family: "Segoe UI", sans-serif; }
+.node rect { fill: #fff; stroke: #c9ced6; stroke-width: 1; rx: 6; }
+.node { cursor: pointer; }
+.node text { font-size: 11px; fill: var(--text); }
+.node.optional rect { stroke-dasharray: 4 3; }
+.node.passed rect { fill: var(--ok-soft); stroke: var(--ok); }
+.node.failed rect { fill: var(--bad-soft); stroke: var(--bad); }
+.node.can rect { fill: var(--accent-soft); stroke: var(--accent); }
+.node.selected rect { stroke: #111; stroke-width: 2.5; }
+.node.ancestor rect { fill: #fff4d6; stroke: #d89b00; stroke-width: 2; }
+.node.descendant rect { fill: #efe6ff; stroke: var(--var); stroke-width: 2; }
+.node.dim { opacity: .3; }
+.edge { fill: none; stroke: #b9c0cb; stroke-width: 1; }
+.edge.hl { stroke: #d89b00; stroke-width: 2; }
+.edge.hl2 { stroke: var(--var); stroke-width: 2; }
+.edge.dim { opacity: .15; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 4px; border: 1px solid #999; }
+.side h3 { margin: 0 0 4px; font-size: 16px; }
+.q { font-family: Consolas, monospace; font-size: 12px; color: var(--muted); font-weight: normal; }
+div.q { margin-top: 6px; }
+.list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.list span { background: var(--code); border-radius: 6px; padding: 1px 8px; font-size: 13px; }
+.students { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; }
+.kb { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+@media (max-width: 800px) { .kb { grid-template-columns: 1fr; } }
+.pred { padding: 6px 10px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; font-family: Consolas, monospace; font-size: 13px; }
+.pred:hover, .pred.active { background: var(--accent-soft); }
+.clauses { font-family: Consolas, monospace; font-size: 13px; white-space: pre-wrap; max-height: 640px; overflow: auto; background: var(--code); border-radius: 8px; padding: 10px 12px; }
+.v { color: var(--var); }
+.help code { background: var(--code); padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Motor de inferență FOL - Planul de învățământ Calculatoare</h1>
+  <div class="sub" id="kbinfo">se încarcă...</div>
+  <nav id="nav">
+    <button data-tab="query" class="active">Interogare</button>
+    <button data-tab="examples">Exemple</button>
+    <button data-tab="graph">Graful prerechizitelor</button>
+    <button data-tab="students">Studenți</button>
+    <button data-tab="kb">Baza de cunoștințe</button>
+    <button data-tab="help">Ajutor</button>
+  </nav>
+</header>
+<main>
+
+<section class="tab active" id="tab-query">
+  <div class="panel">
+    <div class="row">
+      <div class="querybox"><span>?-</span><input class="query" id="q" placeholder="poate_inscrie(cristian, M)." autocomplete="off" spellcheck="false"></div>
+      <label class="toggle"><input type="checkbox" id="trace"> Trace</label>
+      <button class="btn" id="run">Rulează</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="panel" id="result"><span class="muted">Scrie o interogare și apasă Enter. Exemple gata făcute găsești în tab-ul „Exemple”.</span></div>
+      <div class="panel" id="tracepanel" style="display:none"><h2>Trace (backward chaining)</h2><div class="muted" id="tracestats"></div><div class="trace" id="tracebox"></div></div>
+    </div>
+    <div class="panel"><h2>Istoric</h2><div class="history" id="history"><span class="muted">gol</span></div></div>
+  </div>
+</section>
+
+<section class="tab examples" id="tab-examples"></section>
+
+<section class="tab" id="tab-graph">
+  <div class="panel">
+    <div class="row" style="justify-content: space-between">
+      <div class="row">
+        <label>Colorează după student:
+          <select id="studentsel"><option value="">(niciunul)</option></select>
+        </label>
+        <button class="btn ghost small" id="clearsel">Resetează selecția</button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="muted" style="margin-top:6px">Click pe o materie: <b style="color:#d89b00">galben</b> = tot ce îi trebuie (necesita), <b style="color:#8a3ffc">mov</b> = tot ce depinde de ea. Liniile punctate marchează opționalele.</div>
+  </div>
+  <div class="grid2 graphgrid">
+    <div class="graph-wrap" id="graph"></div>
+    <div class="panel side" id="side"><span class="muted">Selectează o materie din graf.</span></div>
+  </div>
+</section>
+
+<section class="tab" id="tab-students"><div class="students" id="studentcards"></div></section>
+
+<section class="tab" id="tab-kb">
+  <div class="kb">
+    <div class="panel"><h2>Predicate</h2><div id="predlist"></div></div>
+    <div class="panel"><h2 id="clausetitle">Toate clauzele</h2><div class="clauses" id="clauses"></div></div>
+  </div>
+</section>
+
+<section class="tab help" id="tab-help">
+  <div class="panel">
+    <h2>Sintaxa interogărilor</h2>
+    <table>
+      <tr><th>Element</th><th>Exemplu</th><th>Semnificație</th></tr>
+      <tr><td>constantă</td><td><code>andrei</code>, <code>baze_de_date</code>, <code>4</code></td><td>începe cu literă mică sau e număr</td></tr>
+      <tr><td>variabilă</td><td><code>S</code>, <code>Materie</code></td><td>începe cu literă mare; motorul îi caută valorile</td></tr>
+      <tr><td>variabilă anonimă</td><td><code>_</code></td><td>„orice”, nu apare în răspuns</td></tr>
+      <tr><td>conjuncție</td><td><code>student(S, 2), poate_inscrie(S, M)</code></td><td>virgula = ȘI</td></tr>
+      <tr><td>diferit</td><td><code>X \= Y</code></td><td>reușește dacă X și Y nu se pot unifica</td></tr>
+      <tr><td>negație</td><td><code>not(picat(S, _))</code></td><td>negație ca eșec: reușește dacă scopul nu se poate demonstra</td></tr>
+    </table>
+    <p class="muted"><code>?-</code> din față și punctul de la final sunt opționale.</p>
+  </div>
+  <div class="panel">
+    <h2>Predicatele principale</h2>
+    <table>
+      <tr><th>Predicat</th><th>Tip</th><th>Semnificație</th></tr>
+      <tr><td><code>materie(M, An, Sem)</code></td><td>fapt</td><td>materia M e în anul An, semestrul Sem</td></tr>
+      <tr><td><code>credite(M, N)</code></td><td>fapt</td><td>M are N credite</td></tr>
+      <tr><td><code>optional(M)</code></td><td>fapt</td><td>M e opțională</td></tr>
+      <tr><td><code>prerechizit(P, M)</code></td><td>fapt</td><td>P trebuie promovată înainte de M</td></tr>
+      <tr><td><code>student(S, An)</code></td><td>fapt</td><td>S e în anul An</td></tr>
+      <tr><td><code>promovat(S, M)</code>, <code>picat(S, M)</code></td><td>fapt</td><td>situația la examene</td></tr>
+      <tr><td><code>necesita(M, P)</code></td><td>regulă recursivă</td><td>P e prerechizit direct sau indirect al lui M</td></tr>
+      <tr><td><code>poate_inscrie(S, M)</code></td><td>regulă (dublă negație)</td><td>S n-a făcut M și are toate prerechizitele directe</td></tr>
+      <tr><td><code>ii_lipseste(S, M, P)</code></td><td>regulă</td><td>din lanțul lui M, lui S îi lipsește P</td></tr>
+      <tr><td><code>colegi(A, B)</code></td><td>regulă cu \=</td><td>același an, persoane diferite</td></tr>
+      <tr><td><code>restanta(S, M)</code></td><td>regulă cu not</td><td>a picat și n-a promovat încă</td></tr>
+      <tr><td><code>eligibil_licenta(S)</code></td><td>regulă cu not</td><td>anul 4, practica de licență făcută, fără restanțe</td></tr>
+    </table>
+  </div>
+  <div class="panel">
+    <h2>Ce înseamnă trace-ul</h2>
+    <p><b style="color:var(--call)">Call</b>: motorul încearcă să demonstreze scopul. <b style="color:var(--exit)">Exit</b>: a reușit, iar scopul e afișat cu variabilele legate. <b style="color:var(--fail)">Fail</b>: scopul nu are nicio soluție, deci motorul se întoarce (backtracking). Indentarea arată adâncimea: sub-scopurile unei reguli sunt mai la dreapta. Variabilele cu sufix (<code>X_1</code>, <code>M_2</code>) sunt copiile proaspete create prin redenumire la fiecare folosire a unei reguli.</p>
+  </div>
+</section>
+
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let NAMES = {};
+let CURRICULUM = null;
+let history = [];
+
+async function getJSON(url) { return (await fetch(url)).json(); }
+async function ask(query, trace = false) {
+  const r = await fetch("/api/query", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, trace }) });
+  return r.json();
+}
+
+function showTab(name) {
+  document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+  document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.id === "tab-" + name));
+}
+$("nav").addEventListener("click", (e) => { if (e.target.dataset.tab) showTab(e.target.dataset.tab); });
+
+function highlightVars(text) {
+  return esc(text).replace(/(^|[^a-z0-9_])([A-Z_][A-Za-z0-9_]*)/g, '$1<span class="v">$2</span>');
+}
+function value(v) {
+  const name = NAMES[v];
+  return name ? `<span class="mono" title="${esc(name)}">${esc(v)}</span> <span class="muted" style="font-size:12px">${esc(name)}</span>` : `<span class="mono">${esc(v)}</span>`;
+}
+
+async function runQuery(query, trace) {
+  query = query.trim().replace(/^\?-\s*/, "");
+  if (!query) return;
+  $("q").value = query;
+  $("trace").checked = trace;
+  const res = await ask(query, trace);
+  renderResult(res);
+  history = [query, ...history.filter((h) => h !== query)].slice(0, 20);
+  $("history").innerHTML = history.map((h) => `<div>${esc(h)}</div>`).join("");
+}
+$("history").addEventListener("click", (e) => { if (e.target.tagName === "DIV") runQuery(e.target.textContent, $("trace").checked); });
+$("run").onclick = () => runQuery($("q").value, $("trace").checked);
+$("q").addEventListener("keydown", (e) => { if (e.key === "Enter") runQuery($("q").value, $("trace").checked); });
+
+function renderResult(res) {
+  const box = $("result");
+  $("tracepanel").style.display = "none";
+  if (!res.ok) { box.innerHTML = `<div class="error">eroare de sintaxă: ${esc(res.error)}</div>`; return; }
+  const n = res.answers.length;
+  let html = `<div class="row" style="margin-bottom:10px"><span class="mono">?- ${esc(res.query)}</span>
+    <span class="badge ${res.success ? "true" : "false"}">${res.success ? "true" : "false"}</span>
+    ${res.variables.length && n ? `<span class="badge info">${n} ${n === 1 ? "răspuns" : "răspunsuri"}</span>` : ""}
+    ${res.truncated ? `<span class="badge warn">oprit după ${n}</span>` : ""}
+    ${res.depth_limit ? `<span class="badge warn">limita de adâncime atinsă: răspuns posibil incomplet</span>` : ""}</div>`;
+  if (res.variables.length && n) {
+    html += `<table><tr><th>#</th>${res.variables.map((v) => `<th class="mono">${esc(v)}</th>`).join("")}</tr>`;
+    res.answers.forEach((a, i) => {
+      html += `<tr><td class="num">${i + 1}</td>${res.variables.map((v) => `<td>${value(a[v])}</td>`).join("")}</tr>`;
+    });
+    html += "</table>";
+  } else if (!res.variables.length && n) {
+    html += `<div class="muted">Interogarea nu are variabile: răspunsul e doar adevărat / fals${n > 1 ? ` (demonstrată pe ${n} căi diferite)` : ""}.</div>`;
+  } else {
+    html += `<div class="muted">Motorul nu a putut demonstra interogarea din baza de cunoștințe (lumea închisă: ce nu se poate demonstra e fals).</div>`;
+  }
+  box.innerHTML = html;
+  if (res.trace.length) {
+    const count = { call: 0, exit: 0, fail: 0 };
+    res.trace.forEach((s) => count[s.event]++);
+    const label = { call: "Call", exit: "Exit", fail: "Fail" };
+    $("tracebox").innerHTML = res.trace.map((s) => `${"  ".repeat(s.depth)}<span class="${s.event}">${label[s.event]}:</span> ${esc(s.goal)}`).join("\n");
+    $("tracestats").textContent = `${res.trace.length} pași: ${count.call} Call, ${count.exit} Exit, ${count.fail} Fail${res.trace_truncated ? " (trace trunchiat)" : ""}`;
+    $("tracepanel").style.display = "block";
+  }
+}
+
+async function loadInfo() {
+  const info = await getJSON("/api/info");
+  $("kbinfo").textContent = `${info.kb_path}: ${info.clauses} clauze, ${info.predicates.length} predicate`;
+  $("chips").innerHTML = info.predicates.map((p) => `<span class="chip" data-p="${esc(p.name)}" data-a="${p.arity}">${esc(p.name)}/${p.arity}</span>`).join("");
+  $("predlist").innerHTML = `<div class="pred active" data-p="">toate <span class="muted">${info.clauses}</span></div>` +
+    info.predicates.map((p) => `<div class="pred" data-p="${esc(p.name)}">${esc(p.name)}/${p.arity} <span class="muted">${p.facts ? p.facts + " fapte" : ""}${p.rules ? p.rules + (p.rules === 1 ? " regulă" : " reguli") : ""}</span></div>`).join("");
+  loadClauses("");
+}
+$("chips").addEventListener("click", (e) => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  const vars = ["X", "Y", "Z"].slice(0, +c.dataset.a);
+  $("q").value = `${c.dataset.p}(${vars.join(", ")}).`;
+  $("q").focus();
+});
+async function loadClauses(p) {
+  const data = await getJSON("/api/clauses?predicate=" + encodeURIComponent(p));
+  $("clausetitle").textContent = p ? `Clauzele predicatului ${p}` : "Toate clauzele";
+  $("clauses").innerHTML = data.clauses.map(highlightVars).join("\n");
+  document.querySelectorAll(".pred").forEach((d) => d.classList.toggle("active", d.dataset.p === p));
+}
+$("predlist").addEventListener("click", (e) => { const d = e.target.closest(".pred"); if (d) loadClauses(d.dataset.p); });
+
+async function loadExamples() {
+  const data = await getJSON("/api/examples");
+  let html = `<div class="panel"><h2>${data.examples.length} exemple de interogări</h2><div class="muted">Aceleași exemple, cu aceeași numerotare, sunt în documentul Word, cu rezultatele lor. „Rulează” deschide tab-ul Interogare și execută exemplul.</div></div>`;
+  for (const cat of data.categories) {
+    const items = data.examples.filter((e) => e.category === cat.id);
+    html += `<h3>${esc(cat.title)}</h3><div class="cards">` + items.map((e) => `
+      <div class="card"><div class="title"><b>#${e.id}</b>${esc(e.title)}</div>
+      <code>?- ${esc(e.query)}</code><div class="expl">${esc(e.explanation)}</div>
+      <div class="row"><button class="btn small" data-q="${esc(e.query)}">Rulează</button>
+      <button class="btn ghost small" data-q="${esc(e.query)}" data-t="1">Rulează cu trace</button></div></div>`).join("") + "</div>";
+  }
+  $("tab-examples").innerHTML = html;
+}
+$("tab-examples").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  showTab("query"); runQuery(b.dataset.q, !!b.dataset.t);
+});
+
+const COLW = 168, NODEW = 150, NODEH = 30, ROWH = 38, TOP = 40;
+let positions = {}, selected = null, studentMode = "";
+
+function layout(subjects, edges) {
+  const bySem = {};
+  subjects.forEach((s) => (bySem[s.semester] = bySem[s.semester] || []).push(s));
+  const preds = {};
+  edges.forEach(([p, m]) => (preds[m] = preds[m] || []).push(p));
+  positions = {};
+  for (let sem = 1; sem <= 8; sem++) {
+    const list = bySem[sem] || [];
+    const order = list.map((s, i) => {
+      const ys = (preds[s.id] || []).map((p) => positions[p] && positions[p].row).filter((v) => v !== undefined);
+      return { s, key: ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : 100 + i };
+    }).sort((a, b) => a.key - b.key);
+    order.forEach(({ s }, row) => (positions[s.id] = { x: 12 + (sem - 1) * COLW, y: TOP + row * ROWH, row }));
+  }
+  const rows = Math.max(...Object.values(bySem).map((l) => l.length));
+  return { width: 8 * COLW + 12, height: TOP + rows * ROWH + 10 };
+}
+
+function shortName(s) { const n = s.name; return n.length > 24 ? n.slice(0, 23) + "…" : n; }
+
+function drawGraph() {
+  const { subjects, edges } = CURRICULUM;
+  const size = layout(subjects, edges);
+  let svg = `<svg width="${size.width}" height="${size.height}" xmlns="http://www.w3.org/2000/svg">`;
+  for (let sem = 1; sem <= 8; sem++) {
+    svg += `<text x="${12 + (sem - 1) * COLW + NODEW / 2}" y="22" text-anchor="middle" font-size="12" font-weight="600" fill="#667085">Anul ${Math.ceil(sem / 2)} · Sem ${sem}</text>`;
+  }
+  edges.forEach(([p, m]) => {
+    const a = positions[p], b = positions[m];
+    const x1 = a.x + NODEW, y1 = a.y + NODEH / 2, x2 = b.x, y2 = b.y + NODEH / 2, mx = (x1 + x2) / 2;
+    svg += `<path class="edge" data-from="${p}" data-to="${m}" d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}"/>`;
+  });
+  subjects.forEach((s) => {
+    const p = positions[s.id];
+    svg += `<g class="node${s.optional ? " optional" : ""}" data-id="${s.id}" transform="translate(${p.x},${p.y})">
+      <title>${esc(s.name)} (${s.id}) · ${s.credits} credite</title>
+      <rect width="${NODEW}" height="${NODEH}"/><text x="8" y="19">${esc(shortName(s))}</text></g>`;
+  });
+  $("graph").innerHTML = svg + "</svg>";
+}
+
+async function selectSubject(id) {
+  selected = id;
+  const s = CURRICULUM.subjects.find((x) => x.id === id);
+  const [anc, desc, can, direct] = await Promise.all([
+    ask(`necesita(${id}, P).`), ask(`necesita(M, ${id}).`), ask(`poate_inscrie(S, ${id}).`), ask(`prerechizit(P, ${id}).`),
+  ]);
+  const ancestors = new Set(anc.answers.map((a) => a.P));
+  const descendants = new Set(desc.answers.map((a) => a.M));
+  document.querySelectorAll(".node").forEach((n) => {
+    const nid = n.dataset.id;
+    n.classList.toggle("selected", nid === id);
+    n.classList.toggle("ancestor", ancestors.has(nid));
+    n.classList.toggle("descendant", descendants.has(nid));
+    n.classList.toggle("dim", nid !== id && !ancestors.has(nid) && !descendants.has(nid));
+  });
+  document.querySelectorAll(".edge").forEach((e) => {
+    const f = e.dataset.from, t = e.dataset.to;
+    const up = (t === id || ancestors.has(t)) && ancestors.has(f);
+    const down = (f === id || descendants.has(f)) && descendants.has(t);
+    e.classList.toggle("hl", up); e.classList.toggle("hl2", down); e.classList.toggle("dim", !up && !down);
+  });
+  const lst = (arr) => arr.length ? `<div class="list">${arr.map((x) => `<span title="${esc(x)}">${esc(NAMES[x] || x)}</span>`).join("")}</div>` : `<div class="muted">-</div>`;
+  const uniq = (arr) => [...new Set(arr)];
+  $("side").innerHTML = `<h3>${esc(s.name)}</h3><div class="mono muted">${s.id}</div>
+    <p>Anul ${s.year}, semestrul ${s.semester} · <b>${s.credits}</b> credite ${s.optional ? '· <span class="badge info">opțional</span>' : ""}</p>
+    <b>Prerechizite directe</b>${lst(direct.answers.map((a) => a.P))}<div class="q">?- prerechizit(P, ${id}).</div>
+    <p></p><b>Tot lanțul (necesita)</b>${lst(uniq(anc.answers.map((a) => a.P)))}<div class="q">?- necesita(${id}, P).</div>
+    <p></p><b>Ce depinde de ea</b>${lst(uniq(desc.answers.map((a) => a.M)))}<div class="q">?- necesita(M, ${id}).</div>
+    <p></p><b>Studenți care se pot înscrie</b>${lst(can.answers.map((a) => a.S))}<div class="q">?- poate_inscrie(S, ${id}).</div>`;
+}
+$("graph").addEventListener("click", (e) => { const n = e.target.closest(".node"); if (n) selectSubject(n.dataset.id); });
+$("clearsel").onclick = () => {
+  selected = null;
+  document.querySelectorAll(".node, .edge").forEach((n) => n.classList.remove("selected", "ancestor", "descendant", "dim", "hl", "hl2"));
+  $("side").innerHTML = '<span class="muted">Selectează o materie din graf.</span>';
+};
+
+function colorByStudent(name) {
+  const st = CURRICULUM.students.find((s) => s.name === name);
+  document.querySelectorAll(".node").forEach((n) => {
+    const id = n.dataset.id;
+    n.classList.toggle("passed", !!st && st.passed.includes(id));
+    n.classList.toggle("failed", !!st && st.backlog.includes(id));
+    n.classList.toggle("can", !!st && st.can_enroll.includes(id) && !st.backlog.includes(id));
+  });
+  $("legend").innerHTML = st
+    ? `<span><i style="background:var(--ok-soft);border-color:var(--ok)"></i>promovat</span><span><i style="background:var(--bad-soft);border-color:var(--bad)"></i>restanță</span><span><i style="background:var(--accent-soft);border-color:var(--accent)"></i>poate_inscrie</span><span><i style="background:#fff"></i>încă inaccesibilă</span>`
+    : "";
+}
+$("studentsel").onchange = (e) => colorByStudent(e.target.value);
+
+function renderStudents() {
+  const credits = Object.fromEntries(CURRICULUM.subjects.map((s) => [s.id, s.credits]));
+  const names = (arr) => arr.length ? `<div class="list">${arr.map((x) => `<span title="${esc(NAMES[x] || x)}">${esc(x)}</span>`).join("")}</div>` : `<div class="muted">-</div>`;
+  $("studentcards").innerHTML = CURRICULUM.students.map((s) => {
+    const total = s.passed.reduce((a, m) => a + (credits[m] || 0), 0);
+    return `<div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">${esc(s.name)}</h2>
+      <span class="badge ${s.graduation ? "true" : "false"}">${s.graduation ? "eligibil licență" : "neeligibil licență"}</span></div>
+      <p class="muted" style="margin:4px 0 10px">Anul ${s.year} · ${s.passed.length} materii promovate · ${total} credite (suma calculată de interfață)</p>
+      <b>Colegi</b> <span class="q mono muted">?- colegi(${s.name}, X).</span>${names(s.colleagues)}
+      <p></p><b>Restanțe</b> <span class="q mono muted">?- restanta(${s.name}, M).</span>${names(s.backlog)}
+      <p></p><b>Se poate înscrie la</b> <span class="q mono muted">?- poate_inscrie(${s.name}, M).</span>${names(s.can_enroll)}
+      <p></p><div class="row"><button class="btn small" data-student="${s.name}">Vezi în graf</button>
+      <button class="btn ghost small" data-q="eligibil_licenta(${s.name}).">De ce ${s.graduation ? "e" : "nu e"} eligibil? (trace)</button></div></div>`;
+  }).join("");
+}
+$("studentcards").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.student) { $("studentsel").value = b.dataset.student; colorByStudent(b.dataset.student); showTab("graph"); }
+  if (b.dataset.q) { showTab("query"); runQuery(b.dataset.q, true); }
+});
+
+async function loadCurriculum() {
+  CURRICULUM = await getJSON("/api/curriculum");
+  CURRICULUM.subjects.forEach((s) => (NAMES[s.id] = s.name));
+  $("studentsel").innerHTML += CURRICULUM.students.map((s) => `<option value="${s.name}">${s.name} (anul ${s.year})</option>`).join("");
+  drawGraph();
+  renderStudents();
+}
+
+function openFromHash() {
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (hash.startsWith("q=")) { showTab("query"); runQuery(hash.slice(2), false); }
+  else if (hash.startsWith("t=")) { showTab("query"); runQuery(hash.slice(2), true); }
+  else if (hash.startsWith("student=")) { $("studentsel").value = hash.slice(8); colorByStudent(hash.slice(8)); showTab("graph"); }
+  else if (hash.startsWith("subject=")) { showTab("graph"); selectSubject(hash.slice(8)); }
+  else if (hash && $("tab-" + hash)) showTab(hash);
+}
+
+loadInfo(); loadExamples();
+loadCurriculum().then(openFromHash);
+$("q").focus();
+</script>
+</body>
+</html>
