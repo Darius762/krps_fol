@@ -89,6 +89,12 @@ def test_trace_indentat_dupa_adancime(repl):
     assert "  Exit: ana \\= dan" in lines
 
 
+def test_redenumirea_reporneste_la_fiecare_interogare(repl):
+    run(*repl, "?- colegi(ana, X).")
+    lines, _ = run(*repl, ":trace", "?- colegi(ana, X).")
+    assert "  Call: student(ana, A_1)" in lines
+
+
 def test_help_quit_si_comanda_necunoscuta(repl):
     lines, results = run(*repl, ":help", ":ceva", "", ":quit")
     assert any(":trace" in line for line in lines)

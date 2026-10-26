@@ -3,10 +3,13 @@
 Ultima actualizare: 2026-10-26
 
 ## Unde suntem
-- Pasul curent terminat: **6 - main.py (REPL) + trace in engine** (teste verzi, 93 passed), **necomis inca**
-- Mesaj de commit propus: `pasul 6: REPL cu :trace, :list, :help`
-- Urmatorul pas: **7 - livrabile**: docs/rules.md (FOL formal + sintaxa noastra), docs/examples.md
-  (10-15 interogari non-triviale cu rezultate REALE rulate prin REPL), README.md, structura prezentarii
+- Pasul curent terminat: **7 - livrabile** (docs/rules.md, docs/examples.md, docs/prezentare.md, README.md)
+  + 2 mici imbunatatiri in engine (teste verzi, 94 passed), **necomis inca**
+- Mesaj de commit propus: `pasul 7: documentatie, exemple de interogari si README`
+- Toti pasii din arhitectura sunt GATA. Ce mai ramane (de discutat cu Darius):
+  - verificare credite reale ECTS (acum inventate) si eventual prerechizitele
+  - repetitie demo dupa docs/prezentare.md; completat coloana "Cine" (impartire intre coechipieri)
+  - optional: interfata web mica; optional: conditie pe an in poate_inscrie (andrei vede materii din anii mari)
 - Git: Darius avea 2 conturi in Git Credential Manager (Darius762, Dariurs) -> rezolvat de el
 
 ## Pasi
@@ -17,8 +20,8 @@ Ultima actualizare: 2026-10-26
 | 3 | fol/parser.py | gata, comis (51837a8) |
 | 4 | fol/knowledge_base.py + kb/curriculum.kb | gata, comis (f37bf78) |
 | 5 | fol/engine.py | gata, comis (79a21ad) |
-| 6 | main.py (REPL) | gata, necomis |
-| 7 | docs/rules.md, docs/examples.md, README.md, prezentare | de facut |
+| 6 | main.py (REPL) | gata, comis (f149bbe) |
+| 7 | docs/rules.md, docs/examples.md, docs/prezentare.md, README.md | gata, necomis |
 
 ## Detalii pasul 3 (parser)
 - tokenize cu regex; parse_program(text) -> lista de Rule; parse_query(text) -> tuple de goal-uri
@@ -59,3 +62,9 @@ Ultima actualizare: 2026-10-26
   - afiseaza toate raspunsurile (max 100), true./false., avertisment la limita de adancime
   - :help, :list [predicat], :trace (toggle: seteaza/sterge engine.tracer), :quit, Ctrl+C/EOF
 - tests/test_main.py: 12 teste pe Repl
+
+## Detalii pasul 7
+- engine: counter resetat la fiecare ask() (trace lizibil: M_2 nu M_156); rename nu mai redenumeste faptele fara variabile
+- docs/examples.md: 15 interogari, rezultatele verificate prin rulare reala; daca se schimba KB-ul, trebuie re-rulate
+- cifre KB: 69 materii, 9 optionale, 63 fapte prerechizit, 5 studenti, 3 fapte picat, 375 clauze total
+- docs/prezentare.md: 8 sectiuni cu timpi, scenariu demo, intrebari probabile

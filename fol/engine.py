@@ -12,6 +12,7 @@ class Engine:
 
     def ask(self, goals):
         self.depth_limit_hit = False
+        self.counter = 0
         query_vars = []
         for goal in goals:
             for var in variables(goal):
@@ -62,8 +63,10 @@ class Engine:
                 yield from self.solve(renamed.body, new_subst, depth + 1)
 
     def rename(self, rule):
-        self.counter += 1
         all_vars = variables(Compound("rule", (rule.head, *rule.body)))
+        if not all_vars:
+            return rule
+        self.counter += 1
         mapping = {var: Var(f"{var.name}_{self.counter}") for var in all_vars}
         return Rule(
             substitute(rule.head, mapping),
