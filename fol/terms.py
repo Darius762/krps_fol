@@ -23,6 +23,10 @@ class Compound:
     args: tuple
 
     def __str__(self):
+        if self.functor == "\\=" and len(self.args) == 2:
+            return f"{self.args[0]} \\= {self.args[1]}"
+        if not self.args:
+            return self.functor
         return f"{self.functor}({', '.join(str(a) for a in self.args)})"
 
 

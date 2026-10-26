@@ -37,3 +37,11 @@ def test_termeni_egali_si_hashable():
     assert Const("a") != Var("a")
     assert Compound("f", (Const("a"),)) == Compound("f", (Const("a"),))
     assert len({Var("X"), Var("X"), Const("X")}) == 2
+
+
+def test_str_predicat_fara_argumente():
+    assert str(Compound("start", ())) == "start"
+
+
+def test_str_diferit_infix():
+    assert str(Compound("\\=", (Var("X"), Var("Y")))) == "X \\= Y"
