@@ -3,9 +3,10 @@ from fol.unify import unify, substitute
 
 
 class Engine:
-    def __init__(self, kb, max_depth=200):
+    def __init__(self, kb, max_depth=200, tracer=None):
         self.kb = kb
         self.max_depth = max_depth
+        self.tracer = tracer
         self.counter = 0
         self.depth_limit_hit = False
 
@@ -28,6 +29,20 @@ class Engine:
             yield from self.solve(rest, new_subst, depth)
 
     def solve_goal(self, goal, subst, depth):
+        self.trace("call", goal, subst, depth)
+        found = False
+        for new_subst in self.prove(goal, subst, depth):
+            found = True
+            self.trace("exit", goal, new_subst, depth)
+            yield new_subst
+        if not found:
+            self.trace("fail", goal, subst, depth)
+
+    def trace(self, event, goal, subst, depth):
+        if self.tracer is not None:
+            self.tracer(event, substitute(goal, subst), depth)
+
+    def prove(self, goal, subst, depth):
         if depth > self.max_depth:
             self.depth_limit_hit = True
             return

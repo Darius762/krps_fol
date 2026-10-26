@@ -3,10 +3,11 @@
 Ultima actualizare: 2026-10-26
 
 ## Unde suntem
-- Pasul curent terminat: **5 - fol/engine.py** (teste verzi, 80 passed), **necomis inca**
-- Mesaj de commit propus: `pasul 5: motor backward chaining cu not si \=`
-- Urmatorul pas: **6 - main.py** (REPL: ?- interogare., :help, :list, :trace, :quit)
-  - pentru :trace va trebui adaugat in Engine un callback de trace (call/exit/fail cu indentare dupa adancime)
+- Pasul curent terminat: **6 - main.py (REPL) + trace in engine** (teste verzi, 93 passed), **necomis inca**
+- Mesaj de commit propus: `pasul 6: REPL cu :trace, :list, :help`
+- Urmatorul pas: **7 - livrabile**: docs/rules.md (FOL formal + sintaxa noastra), docs/examples.md
+  (10-15 interogari non-triviale cu rezultate REALE rulate prin REPL), README.md, structura prezentarii
+- Git: Darius avea 2 conturi in Git Credential Manager (Darius762, Dariurs) -> rezolvat de el
 
 ## Pasi
 | Pas | Modul | Status |
@@ -15,8 +16,8 @@ Ultima actualizare: 2026-10-26
 | 2 | fol/unify.py | gata, comis (5752446) |
 | 3 | fol/parser.py | gata, comis (51837a8) |
 | 4 | fol/knowledge_base.py + kb/curriculum.kb | gata, comis (f37bf78) |
-| 5 | fol/engine.py | gata, necomis |
-| 6 | main.py (REPL) | de facut |
+| 5 | fol/engine.py | gata, comis (79a21ad) |
+| 6 | main.py (REPL) | gata, necomis |
 | 7 | docs/rules.md, docs/examples.md, README.md, prezentare | de facut |
 
 ## Detalii pasul 3 (parser)
@@ -49,3 +50,12 @@ Ultima actualizare: 2026-10-26
 
 ## Observatii
 - Python din .venv e 3.13
+
+## Detalii pasul 6 (REPL)
+- engine: tracer optional (event, goal, depth); solve_goal emite call / exit (la fiecare solutie) / fail (daca nicio solutie);
+  logica propriu-zisa mutata in prove()
+- main.py: clasa Repl(kb, out) cu handle(line) -> False doar la :quit (testabila cu StringIO)
+  - `python main.py [fisier.kb]`, implicit kb/curriculum.kb; prefixul ?- si punctul final sunt optionale
+  - afiseaza toate raspunsurile (max 100), true./false., avertisment la limita de adancime
+  - :help, :list [predicat], :trace (toggle: seteaza/sterge engine.tracer), :quit, Ctrl+C/EOF
+- tests/test_main.py: 12 teste pe Repl

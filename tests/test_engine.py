@@ -129,6 +129,24 @@ def test_raspunsurile_sunt_lenese():
     assert first == ["zero", "s(zero)", "s(s(zero))"]
 
 
+def test_trace_call_exit_fail_cu_adancime():
+    steps = []
+    engine = make_engine("p(a). p(b). q(b). r(X) :- p(X), q(X).",
+                         tracer=lambda event, goal, depth: steps.append((event, str(goal), depth)))
+    assert values(engine, "r(X).", "X") == ["b"]
+    assert steps == [
+        ("call", "r(X)", 0),
+        ("call", "p(X_1)", 1),
+        ("exit", "p(a)", 1),
+        ("call", "q(a)", 1),
+        ("fail", "q(a)", 1),
+        ("exit", "p(b)", 1),
+        ("call", "q(b)", 1),
+        ("exit", "q(b)", 1),
+        ("exit", "r(b)", 0),
+    ]
+
+
 def test_curriculum_necesita_tot_lantul(curriculum):
     lant = set(values(curriculum, "necesita(sisteme_incorporate, P).", "P"))
     assert lant == {
